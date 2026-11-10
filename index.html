@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopee Artbooks - Toko Buku Seni Hewan Terlengkap</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        shopee: '#EE4D2D',
+                        shopeeDark: '#D73211',
+                        shopeeLight: '#FFF1EE',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f5f5f5; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 antialiased selection:bg-shopee selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-2xl relative flex flex-col justify-between overflow-hidden">
+        
+        <!-- ================= 1. AUTH SCREEN ================= -->
+        <div id="screen-auth" class="flex flex-col justify-between min-h-screen p-6 bg-gradient-to-b from-shopeeLight to-white">
+            <div class="pt-8 text-center">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-shopee text-white rounded-2xl shadow-lg mb-4 text-3xl font-bold">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-shopee">Animal Artbooks</h1>
+                <p class="text-sm text-gray-500 mt-1">Platform Seni & Buku Sketsa Hewan Pilihan</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 my-auto">
+                <div class="flex border-b border-gray-200 mb-6">
+                    <button onclick="switchAuthTab('login')" id="tab-login" class="flex-1 pb-3 text-center font-semibold text-shopee border-b-2 border-shopee transition-all">Masuk</button>
+                    <button onclick="switchAuthTab('register')" id="tab-register" class="flex-1 pb-3 text-center font-medium text-gray-400 hover:text-gray-600 transition-all">Daftar</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Email / Nomor HP</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-user"></i></span>
+                            <input type="text" id="login-user" required placeholder="cattlover@gmail.com" class="w-full pl-10 pr-4 py-2.5 text-sm border rounded-xl focus:outline-none focus:border-shopee bg-gray-50">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Kata Sandi</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" id="login-pass" required placeholder="••••••••" class="w-full pl-10 pr-4 py-2.5 text-sm border rounded-xl focus:outline-none focus:border-shopee bg-gray-50">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-shopee hover:bg-shopeeDark text-white py-3 rounded-xl font-semibold shadow-md transition duration-200">
+                        Masuk Sekarang
+                    </button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Nama Lengkap</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid id-card"></i></span>
+                            <input type="text" id="reg-name" required placeholder="Siti Artista" class="w-full pl-10 pr-4 py-2.5 text-sm border rounded-xl focus:outline-none focus:border-shopee bg-gray-50">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Email</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-envelope"></i></span>
+                            <input type="email" id="reg-email" required placeholder="artis@gmail.com" class="w-full pl-10 pr-4 py-2.5 text-sm border rounded-xl focus:outline-none focus:border-shopee bg-gray-50">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Kata Sandi</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" id="reg-pass" required placeholder="••••••••" class="w-full pl-10 pr-4 py-2.5 text-sm border rounded-xl focus:outline-none focus:border-shopee bg-gray-50">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-shopee hover:bg-shopeeDark text-white py-3 rounded-xl font-semibold shadow-md transition duration-200">
+                        Daftar Akun Baru
+                    </button>
+                </form>
+            </div>
+
+            <div class="text-center text-xs text-gray-400 pb-4">
+                Dengan mendaftar, Anda menyetujui Syarat & Ketentuan Shopee Artbooks
+            </div>
+        </div>
+
+
+        <!-- ================= 2. ROLE SELECTION SCREEN ================= -->
+        <div id="screen-role" class="hidden flex flex-col justify-center min-h-screen p-6 bg-gradient-to-b from-shopeeLight to-white text-center">
+            <div class="w-20 h-20 bg-shopee text-white rounded-3xl mx-auto flex items-center justify-center text-3xl shadow-xl mb-6">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Pilih Peran Akses</h2>
+            <p class="text-sm text-gray-500 mb-8">Silakan masuk sebagai Konsumen untuk berbelanja atau sebagai Admin untuk mengelola toko.</p>
+
+            <div class="space-y-4">
+                <button onclick="selectRole('consumer')" class="w-full p-4 bg-white border-2 border-shopee rounded-2xl shadow-sm hover:bg-shopeeLight flex items-center gap-4 transition group text-left">
+                    <div class="w-12 h-12 rounded-xl bg-shopeeLight text-shopee flex items-center justify-center text-xl group-hover:bg-shopee group-hover:text-white transition">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-gray-800">Konsumen / Pembeli</div>
+                        <div class="text-xs text-gray-500">Jelajahi artbooks, beli buku, dan chat admin</div>
+                    </div>
+                </button>
+
+                <button onclick="selectRole('admin')" class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl shadow-sm hover:border-gray-400 flex items-center gap-4 transition group text-left">
+                    <div class="w-12 h-12 rounded-xl bg-gray-100 text-gray-600 flex items-center justify-center text-xl group-hover:bg-gray-800 group-hover:text-white transition">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-gray-800">Admin Toko</div>
+                        <div class="text-xs text-gray-500">Kelola pesanan masuk, kirim barang, & ubah status</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+
+        <!-- ================= 3. CONSUMER APP CONTAINER ================= -->
+        <div id="screen-consumer" class="hidden flex flex-col min-h-screen pb-20">
+            <!-- Top Search Header -->
+            <div class="sticky top-0 z-40 bg-shopee text-white px-4 py-3 flex items-center gap-3 shadow-md">
+                <div class="flex-1 bg-white rounded-lg flex items-center px-3 py-1.5 text-gray-800 shadow-inner">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400 mr-2 text-sm"></i>
+                    <input type="text" id="search-input" oninput="filterArtbooks(this.value)" placeholder="Cari artbooks hewan (Kucing, Singa, Burung...)" class="w-full text-xs bg-transparent focus:outline-none">
+                </div>
+                <button onclick="switchConsumerTab('cart')" class="relative p-2 text-white hover:text-shopeeLight">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-yellow-400 text-gray-900 font-bold text-[10px] px-1.5 py-0.5 rounded-full shadow">0</span>
+                </button>
+            </div>
+
+            <!-- Tab Content Container -->
+            <div id="consumer-content" class="flex-1 overflow-y-auto">
+                
+                <!-- TAB 1: BERANDA (HOME) -->
+                <div id="tab-beranda" class="p-4 space-y-4">
+                    <!-- Banner -->
+                    <div class="bg-gradient-to-r from-orange-500 to-shopee text-white rounded-2xl p-5 shadow-md relative overflow-hidden">
+                        <div class="relative z-10">
+                            <span class="bg-white/20 text-xs px-2.5 py-1 rounded-full font-medium">Promo Spesial Artbooks</span>
+                            <h2 class="text-xl font-extrabold mt-2">Koleksi Animal Art 2026</h2>
+                            <p class="text-xs text-white/90 mt-1">Semua buku sketsa & panduan menggambar hewan di bawah 1.000!</p>
+                            <button onclick="switchConsumerTab('beranda')" class="mt-3 bg-white text-shopee text-xs font-bold px-4 py-2 rounded-lg shadow hover:bg-shopeeLight transition">Belanja Sekarang</button>
+                        </div>
+                        <div class="absolute -right-4 -bottom-4 text-white/10 text-9xl">
+                            <i class="fa-solid fa-paw"></i>
+                        </div>
+                    </div>
+
+                    <!-- Categories / Quick Filters -->
+                    <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-1">
+                        <button onclick="filterCategory('all')" class="category-btn active px-4 py-2 bg-shopee text-white text-xs font-semibold rounded-full shadow whitespace-nowrap">Semua Buku</button>
+                        <button onclick="filterCategory('Kendaraan')" class="category-btn px-4 py-2 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full hover:bg-gray-200 whitespace-nowrap">Kendaraan</button>
+                        <button onclick="filterCategory('Sepak Bola')" class="category-btn px-4 py-2 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full hover:bg-gray-200 whitespace-nowrap">Sepak Bola</button>
+                        <button onclick="filterCategory('Rumah')" class="category-btn px-4 py-2 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full hover:bg-gray-200 whitespace-nowrap">Rumah</button>
+                        <button onclick="filterCategory('Hewan')" class="category-btn px-4 py-2 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full hover:bg-gray-200 whitespace-nowrap">Hewan</button>
+                        <button onclick="filterCategory('Tumbuhan')" class="category-btn px-4 py-2 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full hover:bg-gray-200 whitespace-nowrap">Tumbuhan</button>
+
+
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-gray-800 text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-fire text-shopee"></i> Produk Pilihan <span class="text-xs text-gray-400 font-normal">(Harga di bawah 1.000)</span>
+                            </h3>
+                        </div>
+                        <div id="artbooks-grid" class="grid grid-cols-2 gap-3">
+                            <!-- Injected by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: CHAT ADMIN -->
+                <div id="tab-chat" class="hidden flex flex-col h-[calc(100vh-130px)]">
+                    <div class="bg-gray-50 p-3 border-b border-gray-200 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-shopee text-white flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-headset"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-sm text-gray-800">Admin Shopee Artbooks</div>
+                                <div class="text-[10px] text-green-600 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Online - Siap Membantu</div>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/0813-7123-6782=Halo%20Admin,%20saya%20ingin%20bertanya%20seputar%20Shopee%20Artbooks." target="_blank" class="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-2 rounded-xl font-semibold shadow flex items-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> Chat Langsung
+                        </a>
+                    </div>
+                    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-100/50">
+                        <div class="flex items-start gap-2">
+                            <div class="w-7 h-7 rounded-full bg-shopee text-white flex items-center justify-center text-xs"><i class="fa-solid fa-headset"></i></div>
+                            <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-xs text-xs max-w-[80%]">
+                                Halo Kak! Ada yang bisa kami bantu seputar buku sketsa hewan atau kendala pemesanan?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-white border-t border-gray-200 flex gap-2">
+                        <input type="text" id="chat-input" placeholder="Tulis pesan ke admin..." class="flex-1 px-4 py-2 text-xs border rounded-xl focus:outline-none focus:border-shopee bg-gray-50">
+                        <button onclick="sendChatMessage()" class="bg-shopee hover:bg-shopeeDark text-white px-4 py-2 rounded-xl text-xs font-semibold shadow">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 3: KERANJANG (CART) -->
+                <div id="tab-cart" class="hidden p-4 space-y-4">
+                    <h3 class="font-bold text-gray-800 text-sm mb-2"><i class="fa-solid fa-cart-shopping text-shopee mr-1"></i> Keranjang Belanja Anda</h3>
+                    <div id="cart-items-container" class="space-y-3">
+                        <!-- Injected by JS -->
+                    </div>
+                    <div id="cart-summary" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-gray-100 space-y-3 mt-4">
+                        <div class="flex justify-between text-xs text-gray-500">
+                            <span>Total Item</span>
+                            <span id="cart-total-items">0</span>
+                        </div>
+                        <div class="flex justify-between font-bold text-sm text-gray-800">
+                            <span>Total Harga</span>
+                            <span id="cart-total-price" class="text-shopee">Rp 0</span>
+                        </div>
+                        <button onclick="openCheckoutModal()" class="w-full bg-shopee hover:bg-shopeeDark text-white py-3 rounded-xl font-semibold text-xs shadow-md transition">
+                            Checkout Sekarang
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 4: NOTIFIKASI -->
+                <div id="tab-notif" class="hidden p-4 space-y-3">
+                    <h3 class="font-bold text-gray-800 text-sm mb-2"><i class="fa-solid fa-bell text-shopee mr-1"></i> Notifikasi Terbaru</h3>
+                    <div id="notifications-list" class="space-y-2">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+
+                <!-- TAB 5: AKUN -->
+                <div id="tab-akun" class="hidden p-4 space-y-4">
+                    <div class="bg-gradient-to-r from-shopee to-orange-600 text-white p-5 rounded-2xl shadow-md flex items-center gap-4">
+                        <div class="w-14 h-14 bg-white text-shopee font-bold text-xl rounded-full flex items-center justify-center shadow" id="user-avatar-initial">
+                            S
+                        </div>
+                        <div>
+                            <div class="font-bold text-base" id="user-display-name">Masukkan nama</div>
+                            <div class="text-xs text-white/80" id="user-display-email">@gmail.com</div>
+                            <span class="inline-block mt-1 bg-white/20 text-[10px] px-2 py-0.5 rounded-full font-medium">Premiun</span>
+                        </div>
+                    </div>
+
+                    <!-- Pesanan Saya Card -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="font-bold text-xs text-gray-700 mb-3 flex items-center justify-between">
+                            <span>Status Pesanan Saya</span>
+                            <span class="text-[10px] text-shopee font-semibold">Riwayat Pesanan</span>
+                        </div>
+                        <div id="customer-orders-list" class="space-y-3">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <button onclick="logout()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-right-from-bracket"></i> Keluar Akun
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Shopee Bottom Navigation Bar -->
+            <div class="absolute bottom-0 inset-x-0 bg-white border-t border-gray-200 py-2 px-4 flex justify-around items-center z-40 shadow-lg">
+                <button onclick="switchConsumerTab('beranda')" id="nav-beranda" class="flex flex-col items-center text-shopee transition">
+                    <i class="fa-solid fa-house text-lg"></i>
+                    <span class="text-[10px] font-medium mt-0.5">Beranda</span>
+                </button>
+                <button onclick="switchConsumerTab('chat')" id="nav-chat" class="flex flex-col items-center text-gray-400 hover:text-shopee transition">
+                    <i class="fa-solid fa-comments text-lg"></i>
+                    <span class="text-[10px] font-medium mt-0.5">Chat Admin</span>
+                </button>
+                <button onclick="switchConsumerTab('cart')" id="nav-cart" class="flex flex-col items-center text-gray-400 hover:text-shopee transition">
+                    <i class="fa-solid fa-cart-shopping text-lg"></i>
+                    <span class="text-[10px] font-medium mt-0.5">Keranjang</span>
+                </button>
+                <button onclick="switchConsumerTab('notif')" id="nav-notif" class="flex flex-col items-center text-gray-400 hover:text-shopee transition">
+                    <i class="fa-solid fa-bell text-lg"></i>
+                    <span class="text-[10px] font-medium mt-0.5">Notifikasi</span>
+                </button>
+                <button onclick="switchConsumerTab('akun')" id="nav-akun" class="flex flex-col items-center text-gray-400 hover:text-shopee transition">
+                    <i class="fa-solid fa-user text-lg"></i>
+                    <span class="text-[10px] font-medium mt-0.5">Akun</span>
+                </button>
+            </div>
+        </div>
+
+
+        <!-- ================= 4. ADMIN APP CONTAINER ================= -->
+        <div id="screen-admin" class="hidden flex flex-col min-h-screen bg-gray-50 pb-6">
+            <!-- Admin Top Bar -->
+            <div class="bg-gray-900 text-white px-4 py-3 flex items-center justify-between shadow">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-shopee rounded-lg flex items-center justify-center text-white text-sm font-bold">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-sm">Dashboard Admin Toko</div>
+                        <div class="text-[10px] text-gray-400">Pusat Kelola Pesanan & Pengiriman</div>
+                    </div>
+                </div>
+                <button onclick="logout()" class="text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg text-gray-300 font-medium transition">
+                    Keluar
+                </button>
+            </div>
+
+            <!-- Admin Content -->
+            <div class="p-4 space-y-4 flex-1 overflow-y-auto">
+                <!-- Stats Overview -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm">
+                        <div class="text-xs text-gray-400">Total Pesanan Masuk</div>
+                        <div id="admin-stat-orders" class="text-lg font-bold text-gray-800 mt-1">0</div>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm">
+                        <div class="text-xs text-gray-400">Pendapatan Total</div>
+                        <div id="admin-stat-revenue" class="text-lg font-bold text-shopee mt-1">Rp 0</div>
+                    </div>
+                </div>
+
+                <!-- Pesanan Masuk Management -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-200 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-xs text-gray-800 uppercase tracking-wider"><i class="fa-solid fa-clipboard-list text-shopee mr-1"></i> Daftar Pesanan Pelanggan</h3>
+                        <span id="admin-order-count" class="text-[10px] bg-shopeeLight text-shopee px-2 py-0.5 rounded-full font-bold">0 Pesanan</span>
+                    </div>
+                    <div id="admin-orders-list" class="space-y-3">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= 5. PRODUCT DETAIL MODAL ================= -->
+        <div id="modal-product" class="fixed inset-0 z-50 bg-black/60 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+            <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+                <div class="relative">
+                    <img id="modal-img" src="" alt="Artbook" class="w-full h-64 object-cover">
+                    <button onclick="closeProductModal()" class="absolute top-3 right-3 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center text-sm transition">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <span id="modal-badge" class="absolute bottom-3 left-3 bg-shopee text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow">Star+</span>
+                </div>
+                <div class="p-5 overflow-y-auto space-y-3 flex-1">
+                    <div class="flex justify-between items-start">
+                        <h2 id="modal-title" class="font-bold text-base text-gray-900">Judul Buku</h2>
+                        <span id="modal-price" class="font-extrabold text-shopee text-base">Rp 0</span>
+                    </div>
+                    <div class="text-xs text-gray-500 flex items-center gap-2">
+                        <span><i class="fa-solid fa-star text-yellow-400"></i> 4.9 (120 Ulasan)</span>
+                        <span>•</span>
+                        <span>Terjual 500+</span>
+                    </div>
+                    <hr class="border-gray-100">
+                    <div>
+                        <h4 class="font-semibold text-xs text-gray-700 mb-1">Deskripsi Lengkap Buku & Karya:</h4>
+                        <p id="modal-desc" class="text-xs text-gray-600 leading-relaxed"></p>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-100 p-3 rounded-xl text-[11px] text-orange-800 space-y-1">
+                        <div class="font-semibold"><i class="fa-solid fa-circle-info mr-1"></i> Detail Spesifikasi:</div>
+                        <div>- Format: Buku cetak fisik / Artbook berkualitas tinggi</div>
+                        <div>- Kertas: Paper 150gsm (Cocok untuk pensil & cat air)</div>
+                    </div>
+                </div>
+                <div class="p-3 bg-white border-t border-gray-200 flex gap-2">
+                    <button onclick="addToCartFromModal()" class="flex-1 bg-orange-100 hover:bg-orange-200 text-shopee py-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-cart-plus"></i> + Keranjang
+                    </button>
+                    <button onclick="buyNowFromModal()" class="flex-1 bg-shopee hover:bg-shopeeDark text-white py-3 rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-bag-shopping"></i> Beli Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= 6. CHECKOUT MODAL ================= -->
+        <div id="modal-checkout" class="fixed inset-0 z-50 bg-black/60 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+            <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+                <div class="bg-shopee text-white p-4 flex items-center justify-between">
+                    <h3 class="font-bold text-sm"><i class="fa-solid fa-file-invoice-dollar mr-1"></i> Checkout Pesanan</h3>
+                    <button onclick="closeCheckoutModal()" class="text-white hover:text-gray-200"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div class="p-5 overflow-y-auto space-y-4 flex-1 text-xs">
+                    <!-- Alamat Pengiriman -->
+                    <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 space-y-2">
+                        <div class="font-semibold text-gray-700 flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-shopee"></i> Alamat Pengiriman</div>
+                        <input type="text" id="chk-name" placeholder="Nama Penerima" class="w-full p-2 bg-white border rounded-lg focus:outline-none focus:border-shopee">
+                        <input type="text" id="chk-phone" placeholder="Nomor Telepon / WhatsApp" class="w-full p-2 bg-white border rounded-lg focus:outline-none focus:border-shopee">
+                        <textarea id="chk-address" rows="2" placeholder="Alamat lengkap (Jalan, RT/RW, Kota, Kode Pos)" class="w-full p-2 bg-white border rounded-lg focus:outline-none focus:border-shopee"></textarea>
+                    </div>
+
+                    <!-- Metode Pengiriman -->
+                    <div class="space-y-1.5">
+                        <label class="font-semibold text-gray-700 block"><i class="fa-solid fa-truck-fast text-shopee mr-1"></i> Metode Pengiriman</label>
+                        <select id="chk-shipping" class="w-full p-2.5 bg-gray-50 border rounded-xl font-medium focus:outline-none focus:border-shopee">
+                            <option value="JNE Regular (Rp 150)">JNE Regular - Rp 150 (2-3 Hari)</option>
+                            <option value="J&T Express (Rp 200)">J&T Express - Rp 200 (1-2 Hari)</option>
+                            <option value="Shopee Express Instant (Rp 300)">Shopee Express Instant - Rp 300 (Hari H)</option>
+                        </select>
+                    </div>
+
+                    <!-- Metode Pembayaran & WhatsApp Order Routing -->
+                    <div class="space-y-1.5">
+                        <label class="font-semibold text-gray-700 block"><i class="fa-solid fa-wallet text-shopee mr-1"></i> Metode Pembayaran</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="border-2 border-shopee bg-orange-50/50 p-3 rounded-xl flex flex-col items-center text-center cursor-pointer">
+                                <input type="radio" name="payment" value="DANA" checked class="mb-1 accent-shopee">
+                                <span class="font-bold text-gray-800">DANA E-Wallet</span>
+                                <span class="text-[10px] text-gray-500">0813-7123-6782</span>
+                            </label>
+                            <label class="border-2 border-gray-200 p-3 rounded-xl flex flex-col items-center text-center cursor-pointer hover:border-gray-400">
+                                <input type="radio" name="payment" value="WhatsApp" class="mb-1 accent-shopee">
+                                <span class="font-bold text-gray-800">Konfirmasi WA</span>
+                                <span class="text-[10px] text-gray-500">Kirim Bukti Chat</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Rincian Pembayaran -->
+                    <div class="bg-gray-50 p-3 rounded-xl space-y-1.5 border border-gray-200">
+                        <div class="flex justify-between text-gray-600">
+                            <span>Subtotal Produk</span>
+                            <span id="chk-subtotal">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between text-gray-600">
+                            <span>Biaya Pengiriman</span>
+                            <span id="chk-shipcost">Rp 150</span>
+                        </div>
+                        <hr class="border-gray-200">
+                        <div class="flex justify-between font-bold text-sm text-gray-900">
+                            <span>Total Pembayaran</span>
+                            <span id="chk-grandtotal" class="text-shopee">Rp 0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3 bg-white border-t border-gray-200">
+                    <button onclick="processCheckout()" class="w-full bg-shopee hover:bg-shopeeDark text-white py-3 rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> Buat Pesanan & Kirim ke WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // ================= DATABASE / STATE =================
+        const artbooks = [
+            {
+                id: 1,
+                title: "Kendaraan Darat Bus",
+                category: "Kendaraan",
+                price: 750,
+                rating: 4.9,
+                sold: 520,
+                badge: "Star+",
+                img: "foto/bus.jpeg",
+                desc: "Mari belajar mengenali dan mewarnai kendaraan darat."
+            },
+            {
+                id: 2,
+                title: "Buku Mewarnai Kendaraan Udara Helikopter",
+                category: "Kendaraan",
+                price: 850,
+                rating: 4.8,
+                sold: 410,
+                badge: "Terlaris",
+                img: "foto/helikopter.jpeg",
+                desc: "Mari belajar mengenali dan mewarnai kendaraan udata."
+            },
+            {
+                id: 3,
+                title: "Pemain Bola Messi 10",
+                category: "Sepak Bola",
+                price: 600,
+                rating: 4.7,
+                sold: 330,
+                badge: "Diskon",
+                img: "foto/messi.jpeg",
+                desc: "Mari belajar mengenali dan mewarnai karakter pemain sepak bola."
+            },
+            {
+                id: 4,
+                title: "Kendaraan Mobil",
+                category: "Kendaraan",
+                price: 900,
+                rating: 4.9,
+                sold: 290,
+                badge: "Star+",
+                img: "foto/mobil.jpeg",
+                desc: "Mari belajar mengenali dan mewarnai kendaraan darat."
+            },
+            {
+                id: 5,
+                title: "Kendaraan Pesawat",
+                category: "Kendaraan",
+                price: 870,
+                rating: 8.0,
+                sold: 800,
+                badge: "Star+",
+                img: "foto/pesawat.jpeg",
+                desc: "Mari belajar mengenali dan mewarnai kendaraan udara."
+            },
+            {
+                id: 6,
+                title: "Pemain Bola Ronaldo CR7",
+                category: "Sepak Bola",
+                price: 460,
+                rating: 8.0,
+                sold: 1800,
+                badge: "Star+",
+                img: "foto/ronaldo.jpeg",
+                desc: "Mari belajar mengenali dan mewarnai karakter pemain sepak bola."
+            },
+        ];
+
+        let currentUser = null;
+        let userRole = 'consumer';
+        let cart = [];
+        let orders = [];
+        let notifications = [
+            { id: 1, title: 'Promo Artbooks 2026', desc: 'Nikmati seluruh buku sketsa hewan pilihan di bawah 1.000!', time: 'Hari ini' }
+        ];
+        let selectedProductForModal = null;
+
+        // ================= AUTH FUNCTIONS =================
+        function switchAuthTab(tab) {
+            const loginBtn = document.getElementById('tab-login');
+            const regBtn = document.getElementById('tab-register');
+            const loginForm = document.getElementById('form-login');
+            const regForm = document.getElementById('form-register');
+
+            if (tab === 'login') {
+                loginBtn.className = "flex-1 pb-3 text-center font-semibold text-shopee border-b-2 border-shopee transition-all";
+                regBtn.className = "flex-1 pb-3 text-center font-medium text-gray-400 hover:text-gray-600 transition-all";
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+            } else {
+                regBtn.className = "flex-1 pb-3 text-center font-semibold text-shopee border-b-2 border-shopee transition-all";
+                loginBtn.className = "flex-1 pb-3 text-center font-medium text-gray-400 hover:text-gray-600 transition-all";
+                regForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('login-user').value;
+            currentUser = { name: emailInput.split('@')[0] || 'Pengguna', email: emailInput };
+            showScreen('screen-role');
+            showToast('Berhasil masuk! Silakan pilih peran.');
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            currentUser = { name: name, email: email };
+            showScreen('screen-role');
+            showToast('Akun berhasil dibuat! Silakan pilih peran.');
+        }
+
+        function selectRole(role) {
+            userRole = role;
+            if (role === 'admin') {
+                document.getElementById('screen-role').classList.add('hidden');
+                document.getElementById('screen-admin').classList.remove('hidden');
+                renderAdminDashboard();
+                showToast('Masuk sebagai Admin Toko');
+            } else {
+                document.getElementById('screen-role').classList.add('hidden');
+                document.getElementById('screen-consumer').classList.remove('hidden');
+                renderArtbooks(artbooks);
+                updateCartUI();
+                renderNotifications();
+                renderCustomerOrders();
+                showToast('Selamat datang di Shopee Artbooks!');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('screen-consumer').classList.add('hidden');
+            document.getElementById('screen-admin').classList.add('hidden');
+            document.getElementById('screen-role').classList.add('hidden');
+            document.getElementById('screen-auth').classList.remove('hidden');
+            showToast('Berhasil keluar akun.');
+        }
+
+        function showScreen(screenId) {
+            ['screen-auth', 'screen-role', 'screen-consumer', 'screen-admin'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        // ================= CONSUMER NAVIGATION =================
+        function switchConsumerTab(tabName) {
+            ['beranda', 'chat', 'cart', 'notif', 'akun'].forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if (el) el.classList.add('hidden');
+                const nav = document.getElementById(`nav-${t}`);
+                if (nav) {
+                    nav.className = "flex flex-col items-center text-gray-400 hover:text-shopee transition";
+                }
+            });
+
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            if (activeTab) activeTab.classList.remove('hidden');
+
+            const activeNav = document.getElementById(`nav-${tabName}`);
+            if (activeNav) {
+                activeNav.className = "flex flex-col items-center text-shopee transition font-bold";
+            }
+
+            if (tabName === 'cart') updateCartUI();
+            if (tabName === 'akun') renderCustomerOrders();
+        }
+
+        // ================= CATALOG & PRODUCTS =================
+        function renderArtbooks(data) {
+            const grid = document.getElementById('artbooks-grid');
+            if (!grid) return;
+
+            if (data.length === 0) {
+                grid.innerHTML = `<div class="col-span-2 text-center py-8 text-xs text-gray-400">Tidak ada artbook ditemukan.</div>`;
+                return;
+            }
+
+            grid.innerHTML = data.map(item => `
+                <div onclick="openProductModal(${item.id})" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer hover:shadow-md transition flex flex-col justify-between group">
+                    <div class="relative overflow-hidden bg-gray-100 h-36">
+                        <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <span class="absolute top-2 left-2 bg-shopee text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">${item.badge}</span>
+                    </div>
+                    <div class="p-3 flex flex-col flex-1 justify-between">
+                        <div>
+                            <h4 class="font-semibold text-xs text-gray-800 line-clamp-2 mb-1">${item.title}</h4>
+                            <div class="text-[10px] text-gray-400">Terjual ${item.sold}+ • ⭐ ${item.rating}</div>
+                        </div>
+                        <div class="mt-2 flex items-center justify-between">
+                            <span class="font-extrabold text-shopee text-xs">Rp ${item.price}</span>
+                            <button onclick="event.stopPropagation(); quickAddToCart(${item.id})" class="w-7 h-7 bg-shopeeLight text-shopee hover:bg-shopee hover:text-white rounded-lg flex items-center justify-center transition text-xs shadow-xs">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterArtbooks(keyword) {
+            const query = keyword.toLowerCase();
+            const filtered = artbooks.filter(item => item.title.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query));
+            renderArtbooks(filtered);
+        }
+
+        function filterCategory(category) {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.className = "category-btn px-4 py-2 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full hover:bg-gray-200 whitespace-nowrap";
+            });
+            event.target.className = "category-btn active px-4 py-2 bg-shopee text-white text-xs font-semibold rounded-full shadow whitespace-nowrap";
+
+            if (category === 'all') {
+                renderArtbooks(artbooks);
+            } else {
+                const filtered = artbooks.filter(item => item.category === category);
+                renderArtbooks(filtered);
+            }
+        }
+
+        // ================= PRODUCT MODAL =================
+        function openProductModal(id) {
+            selectedProductForModal = artbooks.find(i => i.id === id);
+            if (!selectedProductForModal) return;
+
+            document.getElementById('modal-img').src = selectedProductForModal.img;
+            document.getElementById('modal-title').innerText = selectedProductForModal.title;
+            document.getElementById('modal-price').innerText = `Rp ${selectedProductForModal.price}`;
+            document.getElementById('modal-desc').innerText = selectedProductForModal.desc;
+            document.getElementById('modal-badge').innerText = selectedProductForModal.badge;
+
+            document.getElementById('modal-product').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('modal-product').classList.add('hidden');
+        }
+
+        function quickAddToCart(id) {
+            const product = artbooks.find(i => i.id === id);
+            if (!product) return;
+
+            const existing = cart.find(i => i.id === id);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            updateCartBadge();
+            showToast(`Berhasil menambahkan "${product.title}" ke keranjang!`);
+        }
+
+        function addToCartFromModal() {
+            if (!selectedProductForModal) return;
+            quickAddToCart(selectedProductForModal.id);
+            closeProductModal();
+        }
+
+        function buyNowFromModal() {
+            if (!selectedProductForModal) return;
+            quickAddToCart(selectedProductForModal.id);
+            closeProductModal();
+            switchConsumerTab('cart');
+        }
+
+        // ================= CART & CHECKOUT =================
+        function updateCartBadge() {
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            const badge = document.getElementById('cart-badge');
+            if (badge) badge.innerText = totalQty;
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const summary = document.getElementById('cart-summary');
+            if (!container) return;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 space-y-2">
+                        <i class="fa-solid fa-cart-shopping text-4xl text-gray-300"></i>
+                        <p class="text-xs text-gray-400">Keranjang belanja Anda masih kosong.</p>
+                        <button onclick="switchConsumerTab('beranda')" class="mt-2 bg-shopee text-white text-xs px-4 py-2 rounded-xl font-semibold shadow">Mulai Belanja</button>
+                    </div>
+                `;
+                if (summary) summary.classList.add('hidden');
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3">
+                    <img src="${item.img}" class="w-16 h-16 object-cover rounded-xl bg-gray-50">
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-xs text-gray-800 line-clamp-1">${item.title}</h4>
+                        <div class="text-shopee font-extrabold text-xs mt-1">Rp ${item.price}</div>
+                        <div class="flex items-center gap-2 mt-2">
+                            <button onclick="updateQty(${item.id}, -1)" class="w-6 h-6 bg-gray-100 rounded-lg text-xs font-bold hover:bg-gray-200">-</button>
+                            <span class="text-xs font-bold">${item.qty}</span>
+                            <button onclick="updateQty(${item.id}, 1)" class="w-6 h-6 bg-gray-100 rounded-lg text-xs font-bold hover:bg-gray-200">+</button>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 p-2 text-xs"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('');
+
+            const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
+            const totalPrice = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+
+            document.getElementById('cart-total-items').innerText = totalItems;
+            document.getElementById('cart-total-price').innerText = `Rp ${totalPrice}`;
+            if (summary) summary.classList.remove('hidden');
+            updateCartBadge();
+        }
+
+        function updateQty(id, change) {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            item.qty += change;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(i => i.id !== id);
+            updateCartUI();
+        }
+
+        function openCheckoutModal() {
+            if (cart.length === 0) return;
+            if (currentUser) {
+                document.getElementById('chk-name').value = currentUser.name;
+                document.getElementById('chk-phone').value = '081234567890';
+                document.getElementById('chk-address').value = 'Jl. Seni No. 45, Bandung';
+            }
+            const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            document.getElementById('chk-subtotal').innerText = `Rp ${subtotal}`;
+            document.getElementById('chk-grandtotal').innerText = `Rp ${subtotal + 150}`;
+            document.getElementById('modal-checkout').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('modal-checkout').classList.add('hidden');
+        }
+
+        // ================= PROSES CHECKOUT & WHATSAPP ROUTING =================
+        function processCheckout() {
+            const name = document.getElementById('chk-name').value;
+            const phone = document.getElementById('chk-phone').value;
+            const address = document.getElementById('chk-address').value;
+            const shipping = document.getElementById('chk-shipping').value;
+            const payment = document.querySelector('input[name="payment"]:checked').value;
+
+            if (!name || !phone || !address) {
+                showToast('Mohon lengkapi informasi alamat pengiriman!');
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            const shippingCost = 150;
+            const grandTotal = subtotal + shippingCost;
+            const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
+
+            // Simpan ke data pesanan lokal
+            const newOrder = {
+                id: orderId,
+                customerName: name,
+                phone: phone,
+                address: address,
+                items: [...cart],
+                shippingCost: shippingCost,
+                total: grandTotal,
+                shippingMethod: shipping,
+                paymentMethod: payment,
+                status: 'Menunggu Pembayaran'
+            };
+
+            orders.unshift(newOrder);
+
+            // Buat Teks Format WhatsApp
+            let productListText = cart.map(i => `• ${i.title} (x${i.qty}) - Rp ${i.price * i.qty}`).join('%0A');
+            let waMessage = `*Halo Admin Shopee Artbooks*,%0A%0ASaya ingin melakukan pemesanan dengan detail berikut:%0A%0A*ID Pesanan:* ${orderId}%0A*Nama:* ${name}%0A*No. HP:* ${phone}%0A*Alamat:* ${address}%0A%0A*Daftar Buku:%0A${productListText}%0A%0A*Kurir:* ${shipping}%0A*Metode Pembayaran:* ${payment}%0A*Total Pembayaran:* *Rp ${grandTotal}*%0A%0AMohon konfirmasi dan instruksi pembayarannya ya. Terima kasih!`;
+
+            // Kosongkan keranjang & tutup modal
+            cart = [];
+            updateCartUI();
+            closeCheckoutModal();
+            switchConsumerTab('akun');
+            showToast('Pesanan dibuat! Mengalihkan ke WhatsApp Admin...');
+
+            // Buka Link WhatsApp Otomatis (Nomor Admin: 081371236782)
+            const adminWhatsAppNumber = "081371236782";
+            setTimeout(() => {
+                window.open(`https://wa.me/${adminWhatsAppNumber}?text=${waMessage}`, '_blank');
+            }, 800);
+        }
+
+        // ================= CHAT & NOTIFICATIONS =================
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML += `
+                <div class="flex items-start gap-2 justify-end">
+                    <div class="bg-shopee text-white p-3 rounded-2xl rounded-tr-none shadow-xs text-xs max-w-[80%]">
+                        ${msg}
+                    </div>
+                </div>
+            `;
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                chatMessages.innerHTML += `
+                    <div class="flex items-start gap-2">
+                        <div class="w-7 h-7 rounded-full bg-shopee text-white flex items-center justify-center text-xs"><i class="fa-solid fa-headset"></i></div>
+                        <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-xs text-xs max-w-[80%]">
+                            Terima kasih Kak atas pertanyaannya. Pesanan atau kendala kakak akan segera kami bantu proses ya! 😊
+                        </div>
+                    </div>
+                `;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+
+        function renderNotifications() {
+            const list = document.getElementById('notifications-list');
+            if (!list) return;
+
+            list.innerHTML = notifications.map(n => `
+                <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-gray-100 space-y-1">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-xs text-gray-800">${n.title}</span>
+                        <span class="text-[10px] text-gray-400">${n.time}</span>
+                    </div>
+                    <p class="text-xs text-gray-600">${n.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderCustomerOrders() {
+            const list = document.getElementById('customer-orders-list');
+            if (!list) return;
+
+            if (orders.length === 0) {
+                list.innerHTML = `<div class="text-xs text-gray-400 text-center py-4">Belum ada riwayat pesanan.</div>`;
+                return;
+            }
+
+            list.innerHTML = orders.map(ord => `
+                <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 space-y-2">
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span class="text-gray-700">${ord.id}</span>
+                        <span class="text-shopee bg-orange-50 px-2 py-0.5 rounded-full">${ord.status}</span>
+                    </div>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        ${ord.items.map(i => `<div>• ${i.title} (x${i.qty})</div>`).join('')}
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-gray-200 text-xs">
+                        <span class="text-gray-500">Total: <strong class="text-gray-800">Rp ${ord.total}</strong></span>
+                        <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20konfirmasi%20pesanan%20${ord.id}" target="_blank" class="bg-green-500 text-white px-3 py-1.5 rounded-lg text-[11px] font-semibold flex items-center gap-1 shadow-xs">
+                            <i class="fa-brands fa-whatsapp"></i> Chat WA
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ================= ADMIN DASHBOARD =================
+        function renderAdminDashboard() {
+            const totalOrders = orders.length;
+            const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0);
+
+            document.getElementById('admin-stat-orders').innerText = totalOrders;
+            document.getElementById('admin-stat-revenue').innerText = `Rp ${totalRevenue}`;
+            document.getElementById('admin-order-count').innerText = `${totalOrders} Pesanan`;
+
+            const adminOrdersList = document.getElementById('admin-orders-list');
+            if (!adminOrdersList) return;
+
+            if (orders.length === 0) {
+                adminOrdersList.innerHTML = `<div class="text-xs text-gray-400 text-center py-6">Belum ada pesanan masuk.</div>`;
+                return;
+            }
+
+            adminOrdersList.innerHTML = orders.map(ord => `
+                <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 space-y-2 text-xs">
+                    <div class="flex justify-between font-bold">
+                        <span>${ord.id} - ${ord.customerName}</span>
+                        <span class="text-shopee">${ord.status}</span>
+                    </div>
+                    <div class="text-gray-500">📞 ${ord.phone} | 📍 ${ord.address}</div>
+                    <div class="bg-white p-2.5 rounded-lg border border-gray-100 space-y-1">
+                        ${ord.items.map(i => `<div class="flex justify-between"><span>${i.title} (x${i.qty})</span><strong>Rp ${i.price * i.qty}</strong></div>`).join('')}
+                    </div>
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="font-bold">Total: Rp ${ord.total}</span>
+                        <div class="flex gap-2">
+                            <button onclick="updateOrderStatus('${ord.id}', 'Dikemas')" class="bg-orange-100 text-shopee px-2.5 py-1 rounded-lg font-semibold hover:bg-orange-200">Kemas</button>
+                            <button onclick="updateOrderStatus('${ord.id}', 'Dikirim')" class="bg-green-100 text-green-700 px-2.5 py-1 rounded-lg font-semibold hover:bg-green-200">Kirim</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateOrderStatus(id, newStatus) {
+            const order = orders.find(o => o.id === id);
+            if (order) {
+                order.status = newStatus;
+                renderAdminDashboard();
+                showToast(`Status pesanan ${id} diperbarui menjadi: ${newStatus}`);
+            }
+        }
+
+        // ================= TOAST NOTIFICATION UTILITY =================
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = "bg-gray-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 pointer-events-auto transition transform translate-y-2 opacity-0";
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-green-400"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderArtbooks(artbooks);
+        });
+    </script>
+</body>
+</html>
